@@ -1,0 +1,14 @@
+fastapi>=0.111.0
+uvicorn>=0.29.0
+transformers==4.45.0
+peft==0.13.0
+accelerate==0.34.0
+bitsandbytes==0.43.1
+streamlit>=1.35.0
+requests>=2.31.0
+pydantic>=2.7.0
+prometheus-fastapi-instrumentator==7.0.0
+prometheus-client>=0.20.0
+python-dotenv>=1.0.0
+sentencepiece
+protobuf

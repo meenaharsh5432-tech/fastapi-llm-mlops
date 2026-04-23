@@ -1,0 +1,6 @@
+model/
+.env
+__pycache__
+*.pyc
+.git
+wandb/

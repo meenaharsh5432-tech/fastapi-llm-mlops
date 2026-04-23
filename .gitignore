@@ -1,0 +1,7 @@
+.env
+model/
+__pycache__/
+*.pyc
+wandb/
+*.log
+grafana/
