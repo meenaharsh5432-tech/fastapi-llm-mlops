@@ -1,3 +1,4 @@
+
 # FastAPI Domain-Specific LLM — Full MLOps Pipeline
 
 ![CI](https://github.com/meenaharsh5432-tech/fastapi-llm-mlops/actions/workflows/ci.yml/badge.svg)
@@ -132,3 +133,10 @@ Prometheus scrapes `/metrics` every 5 seconds. Grafana auto-loads the **FastAPI 
 - Instrumented the API with six Prometheus metrics (counters, histograms, gauges) and a pre-built Grafana dashboard covering request rate, P99 latency, and token throughput
 - Containerised the full stack (FastAPI + Prometheus + Grafana) with Docker Compose and added a four-job GitHub Actions CI pipeline (test, lint, docker-build, notify)
 - Curated and cleaned a 32K+ FastAPI QA dataset from official docs, GitHub issues, and Stack Overflow; published adapter weights and dataset to Hugging Face Hub
+
+
+## Prometheus DashBoard
+<img width="1918" height="912" alt="prometheus" src="https://github.com/user-attachments/assets/d471afe6-c140-4ba3-9ca0-35cf261be94d" />
+
+## Grafana DashBoard
+<img width="1543" height="737" alt="grafana_dashboard" src="https://github.com/user-attachments/assets/ebbfa169-c83c-4753-b9c3-191669064995" />
