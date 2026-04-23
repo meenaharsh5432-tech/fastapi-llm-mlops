@@ -1,5 +1,4 @@
 """
-Week 5 — FastAPI Inference Server (Groq Backend)
 Run: uvicorn server:app --host 0.0.0.0 --port 8000
 """
 
@@ -21,9 +20,9 @@ from starlette.responses import Response
 load_dotenv()
 GROQ_API_KEY = os.getenv("GROQ_API_KEY")
 GROQ_URL     = "https://api.groq.com/openai/v1/chat/completions"
-GROQ_MODEL   = "llama-3.3-70b-versatile"  # Replaces decommissioned mistral-saba-24b
+GROQ_MODEL   = "llama-3.3-70b-versatile"  
 
-# ─── Prometheus Metrics ───────────────────────────────────
+# ─── Prometheus Metrics 
 http_requests_total = Counter(
     "http_requests_total",
     "Total HTTP requests",
@@ -55,7 +54,7 @@ model_load_status = Gauge(
 )
 model_load_status.set(1)
 
-# ─── App ─────────────────────────────────────────────────
+# ─── App 
 app = FastAPI(
     title="FastAPI Domain LLM",
     description="Fine-tuned Mistral 7B on FastAPI domain data",
@@ -63,7 +62,7 @@ app = FastAPI(
 )
 
 
-# ─── Metrics Middleware ───────────────────────────────────
+# ─── Metrics Middleware 
 class MetricsMiddleware(BaseHTTPMiddleware):
     async def dispatch(self, request: Request, call_next):
         if request.url.path == "/metrics":
@@ -94,7 +93,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# ─── Schemas ─────────────────────────────────────────────
+# ─── Schemas 
 class ChatRequest(BaseModel):
     message: str
     max_tokens: int = 512
@@ -106,7 +105,7 @@ class ChatResponse(BaseModel):
     tokens_generated: int
     latency_ms: float
 
-# ─── System prompts ──────────────────────────────────────
+# ─── System prompts 
 FINETUNED_SYSTEM = """You are a FastAPI expert assistant fine-tuned on
 32,000+ FastAPI-specific QA pairs from official docs, GitHub issues,
 and Stack Overflow. You give specific, accurate, version-aware answers
@@ -115,7 +114,7 @@ with working code examples. Always include complete, runnable code."""
 BASE_SYSTEM = """You are a general-purpose AI assistant.
 Answer questions about FastAPI as best you can."""
 
-# ─── Helper ──────────────────────────────────────────────
+# ─── Helper 
 def call_groq(message: str, system_prompt: str,
               max_tokens: int, temperature: float) -> dict:
     headers = {
