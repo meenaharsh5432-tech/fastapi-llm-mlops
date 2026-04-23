@@ -1,6 +1,4 @@
 """
-Week 5 — Streamlit Comparison UI
-Side by side: Base Mistral vs Fine-tuned model
 Run: streamlit run app.py
 """
 
@@ -8,7 +6,7 @@ import streamlit as st
 import requests
 import time
 
-# ─── Page config ─────────────────────────────────────────
+# ─── Page config 
 st.set_page_config(
     page_title="FastAPI LLM — Base vs Fine-tuned",
     page_icon="🚀",
@@ -18,7 +16,7 @@ st.set_page_config(
 st.title("FastAPI Domain LLM — Model Comparison")
 st.caption("Base Mistral 7B vs Fine-tuned on FastAPI/Python domain data")
 
-# ─── Sidebar ─────────────────────────────────────────────
+# ─── Sidebar 
 with st.sidebar:
     st.header("Settings")
     server_url = st.text_input("Server URL", value="http://localhost:8000")
@@ -68,7 +66,7 @@ if clear_button:
     st.session_state.question = ""
     st.rerun()
 
-# ─── Response ────────────────────────────────────────────
+# ─── Response 
 if ask_button and question:
     # Check server health
     try:
@@ -144,7 +142,7 @@ if ask_button and question:
                     except Exception as e:
                         st.error(f"Error: {e}")
 
-# ─── History ─────────────────────────────────────────────
+# ─── History 
 if "history" not in st.session_state:
     st.session_state.history = []
 
