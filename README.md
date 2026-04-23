@@ -140,3 +140,10 @@ Prometheus scrapes `/metrics` every 5 seconds. Grafana auto-loads the **FastAPI 
 
 ## Grafana DashBoard
 <img width="1543" height="737" alt="grafana_dashboard" src="https://github.com/user-attachments/assets/ebbfa169-c83c-4753-b9c3-191669064995" />
+
+## Streamlit UI
+<img width="1868" height="545" alt="streamlit_ui_1" src="https://github.com/user-attachments/assets/5689e91f-c492-4a27-bc5e-5ebd00ab22d0" />
+<img width="1796" height="304" alt="streamlit_ui_2" src="https://github.com/user-attachments/assets/db1942fd-b8be-423a-b8e0-031c0539e99a" />
+<img width="1809" height="702" alt="streamlit_ui_3" src="https://github.com/user-attachments/assets/6d4c427b-80d7-4126-8122-874dd00383a2" />
+
+
