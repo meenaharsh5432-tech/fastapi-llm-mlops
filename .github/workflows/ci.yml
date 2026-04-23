@@ -3,29 +3,86 @@ name: CI
 on:
   push:
     branches: [main]
+  pull_request:
+    branches: [main]
+
+env:
+  GROQ_API_KEY: ${{ secrets.GROQ_API_KEY || 'dummy_key_for_tests' }}
+  HF_TOKEN: ${{ secrets.HF_TOKEN || '' }}
 
 jobs:
-  test-and-build:
+  # ── Job 1: Test ───────────────────────────────────────────
+  test:
     runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v4
 
-      - name: Set up Python
+      - name: Set up Python 3.11
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
 
-      - name: Install dependencies
-        run: pip install fastapi uvicorn httpx pytest pytest-asyncio pydantic python-dotenv prometheus-client requests
+      - name: Install dependencies (skip heavy ML packages)
+        run: |
+          grep -v -E "^(torch|transformers|peft|accelerate|bitsandbytes|sentencepiece|protobuf|streamlit)" \
+            requirements.txt | pip install -r /dev/stdin
 
-      - name: Run tests
-        env:
-          GROQ_API_KEY: dummy_key_for_tests
-        run: pytest tests/ -v
+      - name: Run pytest
+        run: pytest tests/ -v --junitxml=test-results.xml
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: test-results.xml
+
+  # ── Job 2: Lint ───────────────────────────────────────────
+  lint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install flake8
+        run: pip install flake8
+
+      - name: Run flake8
+        run: flake8 server.py app.py --extend-ignore=E501
+
+  # ── Job 3: Docker Build ───────────────────────────────────
+  docker-build:
+    runs-on: ubuntu-latest
+    needs: test
+
+    steps:
+      - uses: actions/checkout@v4
 
       - name: Build Docker image
-        run: docker build -t fastapi-llm:ci .
+        run: docker build -t fastapi-llm:latest .
 
-      - name: CI passed
-        run: echo "CI passed"
+      - name: Print build success
+        run: echo "Docker build successful"
+
+  # ── Job 4: Notify ─────────────────────────────────────────
+  notify:
+    runs-on: ubuntu-latest
+    needs: [test, lint, docker-build]
+    if: always()
+
+    steps:
+      - name: Final status
+        run: |
+          echo "==============================="
+          echo "  CI Pipeline Complete"
+          echo "==============================="
+          echo "  test:         ${{ needs.test.result }}"
+          echo "  lint:         ${{ needs.lint.result }}"
+          echo "  docker-build: ${{ needs.docker-build.result }}"
+          echo "==============================="
