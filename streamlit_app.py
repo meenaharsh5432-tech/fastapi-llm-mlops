@@ -2,6 +2,14 @@ import streamlit as st
 import requests
 import os
 
+import requests
+import traceback
+
+INCIDENT_API = "https://ai-incident-response-production.up.railway.app"
+API_KEY = "your-api-key"
+
+
+
 # ─── Config ──────────────────────────────────────────────
 GROQ_API_KEY = st.secrets.get("GROQ_API_KEY") or os.getenv("GROQ_API_KEY")
 GROQ_URL     = "https://api.groq.com/openai/v1/chat/completions"
@@ -13,6 +21,34 @@ and Stack Overflow. Give specific, accurate, version-aware FastAPI
 answers with complete working code examples. Always include runnable code."""
 
 # Page config 
+def report_error(error_type, message, stack_trace, service="llm-streamlit"):
+    try:
+        requests.post(f"{INCIDENT_API}/api/errors",
+            headers={"X-API-Key": API_KEY},
+            json={
+                "service_name": service,
+                "error_type": error_type,
+                "message": message,
+                "stack_trace": stack_trace,
+                "environment": "prod"
+            },
+            timeout=5
+        )
+    except:
+        pass  # never crash the main app
+
+# Use it anywhere in your Streamlit app:
+try:
+    # your LLM inference code
+    result = model.generate(prompt)
+except Exception as e:
+    report_error(
+        error_type=type(e).__name__,
+        message=str(e),
+        stack_trace=traceback.format_exc()
+    )
+    st.error("Something went wrong")
+
 st.set_page_config(
     page_title="FastAPI Domain LLM",
     page_icon="🚀",
