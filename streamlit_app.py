@@ -126,7 +126,10 @@ def generate(question, max_tokens, temperature):
     }
     try:
         r = requests.post(GROQ_URL, headers=headers, json=payload, timeout=30)
-        return r.json()["choices"][0]["message"]["content"]
+        data = r.json()
+        if "choices" not in data:
+            return f"API error: {data.get('error', {}).get('message', data)}"
+        return data["choices"][0]["message"]["content"]
     except Exception as e:
         return f"Error: {e}"
 
