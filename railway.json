@@ -5,7 +5,7 @@
     "buildCommand": "pip install streamlit requests"
   },
   "deploy": {
-    "startCommand": "sh -c 'streamlit run streamlit_app.py --server.port=$PORT --server.address=0.0.0.0'",
+    "startCommand": "sh -c 'streamlit run streamlit_app.py --server.port=$PORT --server.address=0.0.0.0 --server.enableCORS=false --server.enableXsrfProtection=false'",
     "restartPolicyType": "ON_FAILURE",
     "restartPolicyMaxRetries": 3
   }
