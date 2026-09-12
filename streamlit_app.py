@@ -13,7 +13,7 @@ API_KEY = "your-api-key"
 # ─── Config ──────────────────────────────────────────────
 GROQ_API_KEY = os.getenv("GROQ_API_KEY")
 GROQ_URL     = "https://api.groq.com/openai/v1/chat/completions"
-GROQ_MODEL   = "llama-3.3-70b-versatile"
+GROQ_MODEL = os.getenv("GROQ_MODEL", "openai/gpt-oss-120b")
 
 SYSTEM_PROMPT = """You are a FastAPI expert assistant fine-tuned on 
 32,000+ FastAPI-specific QA pairs from official docs, GitHub issues, 
